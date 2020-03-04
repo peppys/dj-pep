@@ -45,7 +45,8 @@ const App = () => {
                     .map(doc => ({
                         id: doc.id,
                         ...doc.data(),
-                    }));
+                    }))
+                    .sort((a, b) => moment(a.added_at).unix() - moment(b.added_at).unix());
 
                 setSongs(songs)
             });
@@ -142,7 +143,7 @@ const App = () => {
                                             {song.artists.map(artist => artist.name).join(', ')}
                                         </Typography>
                                         <span style={{marginLeft: '10px'}}>
-                                        {`Added by ${parsePhoneNumberFromString(song.added_by).formatNational()} - ${moment(song.added_at).subtract(moment()).seconds()} seconds ago`}
+                                        {`Added by ${parsePhoneNumberFromString(song.added_by).formatNational()} - ${moment.duration(moment().diff(moment(song.added_at))).humanize()} ago`}
                                         </span>
                                     </React.Fragment>
                                 }
