@@ -71,8 +71,6 @@ const App = () => {
                     }))
                     .find(song => song.status === SongStatus.Queued);
 
-                console.log(`Found next song to play`, nextSongToPlay)
-
                 setSongToPlay(nextSongToPlay);
             }
 
@@ -80,8 +78,6 @@ const App = () => {
                 audioContainerRef.current.addEventListener('timeupdate', async () => {
                     const currentlyPlayingSong = songs
                         .find(song => song.status === SongStatus.Queued && song.preview_url === audioContainerRef.current?.src);
-
-                    console.log(`Song playing:`, currentlyPlayingSong);
 
                     if (currentlyPlayingSong) {
                         await db.collection('song_queue')
@@ -96,8 +92,6 @@ const App = () => {
             if (audioContainerRef.current) {
                 audioContainerRef.current.addEventListener('ended', async () => {
                     setSongToPlay(null)
-
-                    console.log(`Song ended:`, songToPlay);
 
                     await db.collection('song_queue')
                         .doc(songToPlay.id)
