@@ -1,10 +1,12 @@
 import logging
+from datetime import datetime
+import traceback
 
 from flask import Request
 from twilio.twiml.messaging_response import MessagingResponse
 
-from lib.firestore.client import upsert_instagram_profile
-from lib.instagram.client import fetch_instagram_profile
+from lib.firestore.client import add_to_song_queue
+from lib.spotify.client import find_song
 
 
 def twilio_message_handler(request: Request):
@@ -21,17 +23,30 @@ def twilio_message_handler(request: Request):
     resp = MessagingResponse()
 
     try:
-        username = request_data['body']
-        username = username.strip()
+        song_search_query = request_data['Body']
+        from_phone_number = request_data['From']
 
-        profile_data = fetch_instagram_profile(username)
-        upsert_instagram_profile(username, profile_data)
+        logging.info(f'Found track_search_query: {song_search_query} from {from_phone_number}')
+
+        song = find_song(song_search_query)
+
+        logging.info(f'Found song {song}')
+
+        if song['preview_url'] is None:
+            raise Exception('No preview url found')
+
+        song.update({
+            'added_by': from_phone_number,
+            'added_at': datetime.now().isoformat(),
+        })
+
+        add_to_song_queue(song)
     except Exception as e:
-        logging.info(f'Could not parse instagram data for request {request_data}')
-        resp.message(f'Sorry I had trouble with that. Please try again!')
+        logging.error(
+            f'Could not search spotify for track: {str(e)} {traceback.format_exc()}')
+        resp.message(f'Sorry I had trouble with that. Please try a different song!')
         return str(resp), 200
 
-    logging.info(f'Found profile data {profile_data}')
-    resp.message(f'Got your request! {profile_data}')
+    resp.message(f'Gotchu fam 🙏🏾. Your song will play shortly...')
 
     return str(resp), 200

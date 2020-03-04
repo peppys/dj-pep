@@ -13,12 +13,11 @@ firebase_admin.initialize_app(cred, {
 db = firestore.client()
 
 
-def upsert_instagram_profile(username: str, data: Dict):
+def add_to_song_queue(data: Dict):
     """
-    Upserts instagram profile data to firestore
-    :param username:
+    Adds song data to queue
     :param data:
     :return:
     """
-    doc_ref = db.collection('instagram_profiles').document(username)
+    doc_ref = db.collection('song_queue').document()
     doc_ref.set(data)
