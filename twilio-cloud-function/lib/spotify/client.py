@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import Dict
 
@@ -23,8 +24,13 @@ def find_song(query: str) -> Dict:
 
     song = results['tracks']['items'][0]
 
+    logging.info(f'Found full song {song}')
+
     return {
         'name': song['name'],
+        'artists': list(map(lambda x: {
+            'name': x['name'],
+        }, song['artists'])),
         'album_name': song['album']['name'],
         'preview_url': song['preview_url'],
         'image_url': song['album']['images'][0]['url']

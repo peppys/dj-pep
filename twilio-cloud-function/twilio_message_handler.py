@@ -36,6 +36,7 @@ def twilio_message_handler(request: Request):
             raise Exception('No preview url found')
 
         song.update({
+            'status': 'QUEUED',
             'added_by': from_phone_number,
             'added_at': datetime.now().isoformat(),
         })
