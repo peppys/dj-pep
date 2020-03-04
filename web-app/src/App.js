@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {parsePhoneNumberFromString} from 'libphonenumber-js'
+import moment from 'moment-timezone';
 
 import {makeStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
@@ -141,7 +142,7 @@ const App = () => {
                                             {song.artists.map(artist => artist.name).join(', ')}
                                         </Typography>
                                         <span style={{marginLeft: '10px'}}>
-                                        {`Added by ${parsePhoneNumberFromString(song.added_by).formatNational()} - ${new Date(song.added_at).toLocaleString()}`}
+                                        {`Added by ${parsePhoneNumberFromString(song.added_by).formatNational()} - ${moment(song.added_at).subtract(moment()).seconds()} seconds ago`}
                                         </span>
                                     </React.Fragment>
                                 }

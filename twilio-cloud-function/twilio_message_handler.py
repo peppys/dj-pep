@@ -38,7 +38,7 @@ def twilio_message_handler(request: Request):
         song.update({
             'status': 'QUEUED',
             'added_by': from_phone_number,
-            'added_at': datetime.now().isoformat(),
+            'added_at': datetime.utcnow().isoformat(),
         })
 
         add_to_song_queue(song)
