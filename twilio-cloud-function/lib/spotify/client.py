@@ -17,12 +17,14 @@ def find_song(query: str) -> Dict:
     :param query:
     :return:
     """
-    results = client.search(q=query, type='track', limit=1)
+    results = client.search(q=query, type='track', limit=20)
 
-    if len(results['tracks']['items']) == 0:
+    songs = list(filter(lambda x: x['preview_url'], results['tracks']['items']))
+
+    if len(songs) == 0:
         raise Exception('Sorry could not find track')
 
-    song = results['tracks']['items'][0]
+    song = songs[0]
 
     logging.info(f'Found full song {song}')
 

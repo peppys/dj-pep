@@ -113,7 +113,7 @@ const App = () => {
     return (
         <div className="App">
             <h1> DJ PEP </h1>
-            <h2>Text song suggestions to (857) 401-8177 </h2>
+            <h2>🎤🎶 TEXT SONGS TO (857) 401-8177 🎤🎶 </h2>
             <div>
                 {songToPlay && <CustomMusicPlayer
                     playlist={[songToPlay]}
