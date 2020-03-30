@@ -5,7 +5,6 @@ import traceback
 from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import text
-from twilio.twiml.messaging_response import MessagingResponse
 
 from lib.firestore.client import add_to_song_queue
 from lib.spotify.client import find_song
@@ -24,8 +23,6 @@ async def twilio_handler(request: Request):
     request_data = request.form
 
     logging.info(f'Received request: {request_data}')
-
-    resp = MessagingResponse()
 
     try:
         song_search_query = request_data['Body'][0]
@@ -50,10 +47,7 @@ async def twilio_handler(request: Request):
     except Exception as e:
         logging.error(
             f'Could not search spotify for track: {str(e)} {traceback.format_exc()}')
-        resp.message(f'Sorry I had trouble with that. Please try a different song!')
 
-        return text(resp, 200)
+        return text('Sorry I had trouble with that. Please try a different song!', 200)
 
-    resp.message(f'Gotchu fam 🙏🏾. Your song will play shortly...')
-
-    return text(resp, 200)
+    return text('Gotchu fam 🙏🏾. Your song will play shortly...', 200)
