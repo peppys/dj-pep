@@ -6,7 +6,8 @@ from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import text
 
-from lib.firestore.client import add_to_song_queue
+from lib.cloudtasks.client import create_task_to_play_song
+from lib.firestore.client import add_song
 from lib.spotify.client import find_song
 
 webhooks_router = Blueprint('webhooks_bp', url_prefix='/webhooks')
@@ -43,7 +44,9 @@ async def twilio_handler(request: Request):
             'added_at': datetime.now(timezone.utc).isoformat(),
         })
 
-        add_to_song_queue(song)
+        song_doc = add_song(song)
+
+        create_task_to_play_song(song_id=song_doc.id)
     except Exception as e:
         logging.error(
             f'Could not search spotify for track: {str(e)} {traceback.format_exc()}')
