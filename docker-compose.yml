@@ -1,0 +1,15 @@
+version: '3'
+services:
+  backend:
+    build: './backend'
+    ports:
+      - '8000:8000'
+    env_file:
+      - './backend/.env'
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /opt/app/google_config.json
+    volumes:
+      - ./backend/api:/opt/app/api
+      - ./backend/lib:/opt/app/lib
+      - ./backend/main.py:/opt/app/main.py
+      - ./backend/google_config.json:/opt/app/google_config.json

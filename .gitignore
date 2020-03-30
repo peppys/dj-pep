@@ -2,4 +2,5 @@
 .env
 *.pyc
 
-twilio-cloud-function/venv
+backend/venv
+backend/google_config.json
