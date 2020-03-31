@@ -1,5 +1,6 @@
 import os
-from typing import Dict
+from enum import Enum
+from typing import Dict, List
 
 import firebase_admin
 from firebase_admin import credentials
@@ -14,6 +15,12 @@ firebase_admin.initialize_app(cred, {
 db = firestore.client()
 
 
+class SongStatus(Enum):
+    QUEUED = 'QUEUED'
+    PLAYING = 'PLAYING'
+    PLAYED = 'PLAYED'
+
+
 def add_song(data: Dict) -> DocumentReference:
     """
     Adds song data to queue
@@ -24,3 +31,14 @@ def add_song(data: Dict) -> DocumentReference:
     doc_ref.set(data)
 
     return doc_ref
+
+
+def find_songs_by_status(status: SongStatus) -> List[Dict]:
+    docs = db.collection('songs').where('status', '==', status.value).stream()
+
+    return [{**{'id': doc.id}, **doc.to_dict()} for doc in docs]
+
+
+def update_by_id(song_id: str, updates: Dict):
+    doc_ref: DocumentReference = db.collection('songs').document(song_id)
+    doc_ref.update(updates)
