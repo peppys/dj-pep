@@ -35,11 +35,11 @@ const useStyles = makeStyles(theme => ({
 
 const App = () => {
     const [songs, setSongs] = useState([]);
-    const [songToPlay, setSongToPlay] = useState(null);
+    const [playingSong, setSongToPlay] = useState(null);
     const classes = useStyles();
 
     useEffect(() => {
-        db.collection('song_queue')
+        db.collection('songs')
             .onSnapshot(snapshot => {
                 const songs = snapshot.docs
                     .map(doc => ({
@@ -48,70 +48,37 @@ const App = () => {
                     }))
                     .sort((a, b) => moment(a.added_at).unix() - moment(b.added_at).unix());
 
+                const songToPlay = songs.find(({status}) => status === SongStatus.Playing);
+                if (songToPlay) {
+                    setSongToPlay({
+                        progress: 5,
+                        id: songToPlay.id,
+                        status: songToPlay.status,
+                        url: songToPlay.preview_url,
+                        cover: songToPlay.image_url,
+                        title: songToPlay.name,
+                        artist: [
+                            ...songToPlay.artists.map(artist => artist.name),
+                            `Added by ${parsePhoneNumberFromString(songToPlay.added_by).formatNational()}`,
+                        ],
+                    })
+                } else {
+                    setSongToPlay(null)
+                }
+
                 setSongs(songs)
             });
     }, []);
 
-
     const audioContainerRef = React.createRef();
-    useEffect(() => {
-        const syncSongState = async () => {
-            if (!songToPlay) {
-                const nextSongToPlay = songs
-                    .map(song => ({
-                        id: song.id,
-                        status: song.status,
-                        url: song.preview_url,
-                        cover: song.image_url,
-                        title: song.name,
-                        artist: [
-                            ...song.artists.map(artist => artist.name),
-                            `Added by ${parsePhoneNumberFromString(song.added_by).formatNational()}`,
-                        ],
-                    }))
-                    .find(song => song.status === SongStatus.Queued);
-
-                setSongToPlay(nextSongToPlay);
-            }
-
-            if (audioContainerRef.current) {
-                audioContainerRef.current.addEventListener('timeupdate', async () => {
-                    const currentlyPlayingSong = songs
-                        .find(song => song.status === SongStatus.Queued && song.preview_url === audioContainerRef.current?.src);
-
-                    if (currentlyPlayingSong) {
-                        await db.collection('song_queue')
-                            .doc(currentlyPlayingSong.id)
-                            .update({
-                                status: SongStatus.Playing,
-                            });
-                    }
-                })
-            }
-
-            if (audioContainerRef.current) {
-                audioContainerRef.current.addEventListener('ended', async () => {
-                    setSongToPlay(null)
-
-                    await db.collection('song_queue')
-                        .doc(songToPlay.id)
-                        .update({
-                            status: SongStatus.Played,
-                        });
-                })
-            }
-        };
-
-        syncSongState()
-    }, [audioContainerRef, songs, songToPlay])
 
     return (
         <div className="App">
             <h1> DJ PEP </h1>
             <h2>🎤🎶 TEXT SONGS TO (857) 401-8177 🎤🎶 </h2>
             <div>
-                {songToPlay && <CustomMusicPlayer
-                    playlist={[songToPlay]}
+                {playingSong && <CustomMusicPlayer
+                    playlist={[playingSong]}
                     mode={'vertical'}
                     playMode={'loop'}
                     autoplay={true}
