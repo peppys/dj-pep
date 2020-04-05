@@ -59,7 +59,7 @@ const App = () => {
                         title: songToPlay.name,
                         artist: [
                             ...songToPlay.artists.map(artist => artist.name),
-                            `Added by ${parsePhoneNumberFromString(songToPlay.added_by).formatNational()}`,
+                            `Added by ${songToPlay.added_by_name || parsePhoneNumberFromString(songToPlay.added_by).formatNational()}`,
                         ],
                     })
                 } else {
