@@ -104,7 +104,7 @@ const App = () => {
                                             {song.artists.map(artist => artist.name).join(', ')}
                                         </Typography>
                                         <span style={{marginLeft: '10px'}}>
-                                        {`Added by ${parsePhoneNumberFromString(song.added_by).formatNational()} - ${moment.duration(moment().diff(moment(song.added_at))).humanize()} ago`}
+                                        {`Added by ${songToPlay.added_by_name || parsePhoneNumberFromString(song.added_by).formatNational()} - ${moment.duration(moment().diff(moment(song.added_at))).humanize()} ago`}
                                         </span>
                                     </React.Fragment>
                                 }
