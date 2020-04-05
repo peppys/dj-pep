@@ -36,7 +36,7 @@ def add_song(data: Dict) -> DocumentReference:
 def find_contact(phone_number: str) -> Optional[DocumentReference]:
     try:
         return db.collection('phone_book').document(phone_number).get()
-    except Exception as e:
+    except Exception:
         return None
 
 
