@@ -7,7 +7,7 @@ from sanic.request import Request
 from sanic.response import text
 
 from lib.cloudtasks.client import create_task_to_play_song
-from lib.firestore.client import add_song
+from lib.firestore.client import add_song, find_contact
 from lib.spotify.client import find_song
 
 webhooks_router = Blueprint('webhooks_bp', url_prefix='/webhooks')
@@ -43,6 +43,10 @@ async def twilio_handler(request: Request):
             'added_by': from_phone_number,
             'added_at': datetime.now(timezone.utc).isoformat(),
         })
+
+        contact = find_contact(from_phone_number)
+        if contact:
+            song.update({'added_by_name': contact.get('name')})
 
         song_doc = add_song(song)
 

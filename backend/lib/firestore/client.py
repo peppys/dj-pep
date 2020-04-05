@@ -1,6 +1,6 @@
 import os
 from enum import Enum
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import firebase_admin
 from firebase_admin import credentials
@@ -31,6 +31,13 @@ def add_song(data: Dict) -> DocumentReference:
     doc_ref.set(data)
 
     return doc_ref
+
+
+def find_contact(phone_number: str) -> Optional[DocumentReference]:
+    try:
+        return db.collection('phone_book').document(phone_number).get()
+    except Exception as e:
+        return None
 
 
 def find_songs_by_status(status: SongStatus) -> List[Dict]:
