@@ -42,7 +42,11 @@ def add_contact(phone_number: str, name: str) -> DocumentReference:
 
 def find_contact(phone_number: str) -> Optional[DocumentReference]:
     try:
-        return db.collection('phone_book').document(phone_number).get().exists
+        doc_ref = db.collection('phone_book').document(phone_number).get()
+        if not doc_ref.exists:
+            return None
+
+        return doc_ref
     except Exception:
         return None
 
