@@ -40,6 +40,7 @@ const App = () => {
 
     useEffect(() => {
         db.collection('songs')
+            .where('status', 'in', [SongStatus.Queued, SongStatus.Playing])
             .onSnapshot(snapshot => {
                 const songs = snapshot.docs
                     .map(doc => ({
