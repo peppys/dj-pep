@@ -40,6 +40,13 @@ def find_contact(phone_number: str) -> Optional[DocumentReference]:
         return None
 
 
+def find_songs_by_status_and_preview_url(status: SongStatus, preview_url: str) -> List[Dict]:
+    docs = db.collection('songs').where('status', '==', status.value).where('preview_url', '==',
+                                                                            preview_url).stream()
+
+    return [{**{'id': doc.id}, **doc.to_dict()} for doc in docs]
+
+
 def find_songs_by_status(status: SongStatus) -> List[Dict]:
     docs = db.collection('songs').where('status', '==', status.value).stream()
 

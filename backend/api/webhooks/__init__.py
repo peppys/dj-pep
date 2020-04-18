@@ -7,7 +7,8 @@ from sanic.request import Request
 from sanic.response import text
 
 from lib.cloudtasks.client import create_task_to_play_song
-from lib.firestore.client import add_song, find_contact
+from lib.firestore.client import add_song, find_contact, SongStatus, \
+    find_songs_by_status_and_preview_url
 from lib.spotify.client import find_song
 
 webhooks_router = Blueprint('webhooks_bp', url_prefix='/webhooks')
@@ -38,8 +39,13 @@ async def twilio_handler(request: Request):
         if song['preview_url'] is None:
             raise Exception('No preview url found')
 
+        same_songs_queued = find_songs_by_status_and_preview_url(status=SongStatus.QUEUED,
+                                                                 preview_url=song['preview_url'])
+        if len(same_songs_queued) > 0:
+            raise Exception('Song is already queued')
+
         song.update({
-            'status': 'QUEUED',
+            'status': SongStatus.QUEUED.value,
             'added_by': from_phone_number,
             'added_at': datetime.now(timezone.utc).isoformat(),
         })
