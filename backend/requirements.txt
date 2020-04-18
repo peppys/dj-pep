@@ -6,3 +6,5 @@ sanic==19.12.0
 google-cloud-tasks==1.5.0
 googleapis-common-protos==1.6.0
 mutagen
+phonenumbers==8.12.1
+

@@ -33,9 +33,16 @@ def add_song(data: Dict) -> DocumentReference:
     return doc_ref
 
 
+def add_contact(phone_number: str, name: str) -> DocumentReference:
+    doc_ref = db.collection('phone_book').document(phone_number)
+    doc_ref.set({'name': name})
+
+    return doc_ref
+
+
 def find_contact(phone_number: str) -> Optional[DocumentReference]:
     try:
-        return db.collection('phone_book').document(phone_number).get()
+        return db.collection('phone_book').document(phone_number).get().exists
     except Exception:
         return None
 
