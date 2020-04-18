@@ -23,11 +23,10 @@ async def song_player_handler(request: Request):
 
     logging.info(f'Parsed payload: {payload}')
 
+    # update any songs that are playing, in-case the last task errored out
     playing_songs = find_songs_by_status(SongStatus.PLAYING)
-    if len(playing_songs) > 0:
-        logging.error(f'Found a song still playing {playing_songs}. Payload: {payload}')
-
-        return json({'error': 'A song is still playing!'}, status=400)
+    for playing_song in playing_songs:
+        update_by_id(playing_song['id'], {'status': SongStatus.PLAYED.value})
 
     response = requests.get(payload['song_url'])
     response.raise_for_status()
