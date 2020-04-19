@@ -54,7 +54,20 @@ jobs:
           docker push $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE
 
       # Deploy the Docker image to the Cloud Run service
-      - name: Deploy
+      - name: Deploy API
         run: |
           gcloud run deploy $CLOUD_RUN_SERVICE --image $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed --project $GOOGLE_PROJECT --region us-central1
+
+      # Deploy the static web page to Netlify
+      - name: Deploy Web
+        run: |
+          cd web-app
+          yarn install
+          yarn build
+          yarn export
+          zip -vr website.zip out
+          curl -H "Content-Type: application/zip" \
+               -H "Authorization: Bearer $NETLIFY_ACCESS_TOKEN" \
+               --data-binary "@deploy.zip" \
+               "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE/deploys"
 
