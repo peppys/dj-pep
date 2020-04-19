@@ -12619,10 +12619,9 @@ react-is@^16.7.0, react-is@^16.8.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.0.tgz#0f37c3613c34fe6b37cd7f763a0d6293ab15c527"
   integrity sha512-GFMtL0vHkiBv9HluwNZTggSn/sCyEt9n02aM0dSAjGGyqyNlAyftYm4phPxdvCigG15JreC5biwxCgTAJZ7yAA==
 
-react-responsive-music-player@^0.4.3:
+"react-responsive-music-player@https://github.com/peppys/react-responsive-music-player.git":
   version "0.4.3"
-  resolved "https://registry.yarnpkg.com/react-responsive-music-player/-/react-responsive-music-player-0.4.3.tgz#0c0afba799cc901e43a311bd6f65588238e82449"
-  integrity sha512-+0oMqPy7dyKYV+4EV1cLmXISyOAEu5bKObNKglTfwbKlSetWLbXv+hMw30Ljuzarjow96O/0OlR3NukZsJ2P1w==
+  resolved "https://github.com/peppys/react-responsive-music-player.git#d0578a2f890ca57b5d13a48266639779daa2c057"
   dependencies:
     classnames "^2.2.6"
     font-awesome "^4.7.0"

@@ -15,7 +15,7 @@
     "next-transpile-modules": "^3.2.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.1",
-    "react-responsive-music-player": "^0.4.3",
+    "react-responsive-music-player": "https://github.com/peppys/react-responsive-music-player.git",
     "react-scripts": "3.4.0"
   },
   "scripts": {
