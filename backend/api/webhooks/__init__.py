@@ -1,3 +1,4 @@
+import os
 import logging
 from datetime import datetime, timezone
 import traceback
@@ -9,7 +10,9 @@ from sanic.response import text
 from lib.cloudtasks.client import create_task_to_play_song
 from lib.firestore.client import add_song, find_contact, SongStatus, \
     find_songs_by_status_and_preview_url
-from lib.spotify.client import find_song
+
+from lib.spotify import client as spotify_client
+from lib import itunes as itunes_client
 
 webhooks_router = Blueprint('webhooks_bp', url_prefix='/webhooks')
 
@@ -32,7 +35,10 @@ async def twilio_handler(request: Request):
 
         logging.info(f'Found track_search_query: {song_search_query} from {from_phone_number}')
 
-        song = find_song(song_search_query)
+        if os.getenv('USE_ITUNES_API') == 'TRUE':
+            song = await itunes_client.find_song(song_search_query)
+        else:
+            song = spotify_client.find_song(song_search_query)
 
         logging.info(f'Found song {song}')
 
@@ -54,9 +60,9 @@ async def twilio_handler(request: Request):
         if contact:
             song.update({'added_by_name': contact.get('name')})
 
-        song_doc = add_song(song)
-
-        create_task_to_play_song(song_id=song_doc.id, song_url=song['preview_url'])
+        # song_doc = add_song(song)
+        #
+        # create_task_to_play_song(song_id=song_doc.id, song_url=song['preview_url'])
     except Exception as e:
         logging.error(
             f'Could not search spotify for track: {str(e)} {traceback.format_exc()}')

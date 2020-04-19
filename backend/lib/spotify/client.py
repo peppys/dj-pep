@@ -35,5 +35,6 @@ def find_song(query: str) -> Dict:
         }, song['artists'])),
         'album_name': song['album']['name'],
         'preview_url': song['preview_url'],
-        'image_url': song['album']['images'][0]['url']
+        'image_url': song['album']['images'][0]['url'],
+        'source': 'spotify'
     }

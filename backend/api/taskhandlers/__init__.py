@@ -5,7 +5,6 @@ from json import loads
 
 import requests
 
-from mutagen.mp3 import MP3
 from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import json
@@ -31,17 +30,12 @@ async def song_player_handler(request: Request):
     response = requests.get(payload['song_url'])
     response.raise_for_status()
 
-    with open('./song.mp3', mode='wb') as f:
-        f.write(response.content)
-
     update_by_id(payload['song_id'], {'status': SongStatus.PLAYING.value,
                                       'started_playing_at': datetime.utcnow().isoformat()})
 
-    audio = MP3('./song.mp3')
+    print(f'Waiting 29 seconds')
 
-    print(f'Waiting {audio.info.length} seconds')
-
-    await sleep(audio.info.length)
+    await sleep(29)
 
     update_by_id(payload['song_id'], {'status': SongStatus.PLAYED.value,
                                       'finished_playing_at': datetime.utcnow().isoformat()})
