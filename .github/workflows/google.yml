@@ -2,9 +2,10 @@
 
 name: Build and Deploy to Cloud Run
 
-on:
-  release:
-    types: [created]
+on: [push]
+#on:
+#  release:
+#    types: [created]
 
 # Environment variables available to all jobs and steps in this workflow
 env:
