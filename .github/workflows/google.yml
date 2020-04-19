@@ -76,8 +76,8 @@ jobs:
           yarn install
           yarn build
           yarn export
-          zip -r website.zip out
+          zip -vr website.zip out
           curl -H "Content-Type: application/zip" \
                          -H "Authorization: Bearer $NETLIFY_ACCESS_TOKEN" \
-                         --data-binary "website.zip" \
+                         --data-binary "@website.zip" \
                          "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE/deploys"
