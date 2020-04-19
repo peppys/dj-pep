@@ -76,8 +76,8 @@ export default function Index() {
     <>
       <Head>
         <title>DJ PEP</title>
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link rel="shortcut icon" href="/favicon.ico"/>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
       </Head>
       <div className="App">
         <h1> DJ PEP </h1>
@@ -100,7 +100,7 @@ export default function Index() {
                 <ListItemText
                   primary={song.name}
                   secondary={
-                    <React.Fragment>
+                    <>
                       <Typography
                         component="span"
                         variant="body2"
@@ -112,7 +112,7 @@ export default function Index() {
                       <span style={{marginLeft: '10px'}}>
                                         {`Added by ${song.added_by_name || parsePhoneNumberFromString(song.added_by).formatNational()} - ${moment.duration(moment().diff(moment(song.added_at))).humanize()} ago`}
                                         </span>
-                    </React.Fragment>
+                    </>
                   }
                 />
               </ListItem>
