@@ -7,19 +7,21 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "dotenv-webpack": "^1.7.0",
     "firebase": "^7.9.3",
     "libphonenumber-js": "^1.7.45",
     "moment-timezone": "^0.5.28",
+    "next": "^9.3.5",
+    "next-transpile-modules": "^3.2.0",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0",
+    "react-dom": "^16.13.1",
     "react-responsive-music-player": "^0.4.3",
     "react-scripts": "3.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "eslintConfig": {
     "extends": "react-app"
