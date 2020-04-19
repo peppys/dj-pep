@@ -72,11 +72,12 @@ const App = () => {
     }, []);
 
     const audioContainerRef = React.createRef();
+    const phoneNumber = parsePhoneNumberFromString(process.env.REACT_APP_PHONE_NUMBER).formatNational();
 
     return (
         <div className="App">
             <h1> DJ PEP </h1>
-            <h2>🎤🎶 TEXT SONGS TO (857) 401-8177 🎤🎶 </h2>
+            <h2>🎤🎶 TEXT SONGS TO {phoneNumber} 🎤🎶 </h2>
             <div>
                 {playingSong && <CustomMusicPlayer
                     playlist={[playingSong]}
