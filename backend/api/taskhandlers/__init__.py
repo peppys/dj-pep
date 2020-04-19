@@ -33,9 +33,9 @@ async def song_player_handler(request: Request):
     update_by_id(payload['song_id'], {'status': SongStatus.PLAYING.value,
                                       'started_playing_at': datetime.utcnow().isoformat()})
 
-    print(f'Waiting 29 seconds')
+    print(f'Waiting 30 seconds')
 
-    await sleep(29)
+    await sleep(30)
 
     update_by_id(payload['song_id'], {'status': SongStatus.PLAYED.value,
                                       'finished_playing_at': datetime.utcnow().isoformat()})
