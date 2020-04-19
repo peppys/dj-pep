@@ -78,6 +78,10 @@ export default function Index() {
         <title>DJ PEP</title>
         <link rel="shortcut icon" href="/favicon.ico"/>
         <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
+        <meta
+          name="description"
+          content="Hate your DJ? DJ Pep has your back. Text your favorite songs to the phone number displayed, and DJ Pep will starting playing each song."
+        />
       </Head>
       <div className="App">
         <h1> DJ PEP </h1>
