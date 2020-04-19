@@ -27,7 +27,7 @@ async def find_song(query: str) -> Dict:
 
     return {
         'name': song['attributes']['name'],
-        'artists': [song['attributes']['artistName']],
+        'artists': [{'name': song['attributes']['artistName']}],
         'album_name': song['attributes']['albumName'],
         'preview_url': song['attributes']['previews'][0]['url'],
         'image_url': song['attributes']['artwork']['url'].replace('{w}', '500').replace('{h}',
