@@ -1,6 +1,11 @@
 .idea
 .env
 *.pyc
+*.zip
+.DS_Store
+
 
 backend/venv
 backend/google_config.json
+
+web-app/out

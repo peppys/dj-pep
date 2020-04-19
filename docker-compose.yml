@@ -13,12 +13,4 @@ services:
       - ./backend/lib:/opt/app/lib
       - ./backend/main.py:/opt/app/main.py
       - ./backend/google_config.json:/opt/app/google_config.json
-  web-app:
-    build: './web-app'
-    ports:
-      - '3000:3000'
-    env_file:
-      - './web-app/.env'
-    volumes:
-      - ./web-app/public:/opt/app/public
-      - ./web-app/src:/opt/app/src
+
