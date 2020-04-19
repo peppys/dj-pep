@@ -1,6 +1,7 @@
 # This workflow will build a docker container, publish it to Google Container Registry, and deploy it to Cloud Run when a release is created
+# This will also deploy the static website to Netlify
 
-name: Build and Deploy to Cloud Run
+name: Build and Deploy to Cloud Run and Netlify
 
 on:
   release:
