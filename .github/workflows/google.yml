@@ -12,6 +12,8 @@ env:
   GOOGLE_SERVICE_ACCOUNT_EMAIL: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
   GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
   CLOUD_RUN_SERVICE: ${{ secrets.CLOUD_RUN_SERVICE }}
+  NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+  NETLIFY_SITE: ${{ secrets.NETLIFY_SITE }}
   GITHUB_SHA: ${{ github.sha }}
   GITHUB_RELEASE_TAG: ${{ github.event.release.tag_name }}
   IMAGE: dj-pep-api
@@ -33,30 +35,30 @@ jobs:
           service_account_email: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
           service_account_key: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
 
-      # Configure docker to use the gcloud command-line tool as a credential helper
-      - run: |
-          # Set up docker to authenticate
-          # via gcloud command-line tool.
-          gcloud auth configure-docker
-
-      # Build the Docker image
-      - name: Build
-        run: |
-          docker build -t "$REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:$GITHUB_SHA" \
-            -t "$REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:$GITHUB_RELEASE_TAG" \
-            -t "$REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:latest" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF" ./backend
-
-      # Push the Docker image to Google Container Registry
-      - name: Publish
-        run: |
-          docker push $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE
-
-      # Deploy the Docker image to the Cloud Run service
-      - name: Deploy API
-        run: |
-          gcloud run deploy $CLOUD_RUN_SERVICE --image $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed --project $GOOGLE_PROJECT --region us-central1
+#      # Configure docker to use the gcloud command-line tool as a credential helper
+#      - run: |
+#          # Set up docker to authenticate
+#          # via gcloud command-line tool.
+#          gcloud auth configure-docker
+#
+#      # Build the Docker image
+#      - name: Build
+#        run: |
+#          docker build -t "$REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:$GITHUB_SHA" \
+#            -t "$REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:$GITHUB_RELEASE_TAG" \
+#            -t "$REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:latest" \
+#            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+#            --build-arg GITHUB_REF="$GITHUB_REF" ./backend
+#
+#      # Push the Docker image to Google Container Registry
+#      - name: Publish
+#        run: |
+#          docker push $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE
+#
+#      # Deploy the Docker image to the Cloud Run service
+#      - name: Deploy API
+#        run: |
+#          gcloud run deploy $CLOUD_RUN_SERVICE --image $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed --project $GOOGLE_PROJECT --region us-central1
 
       # Deploy the static web page to Netlify
       - name: Deploy Web
