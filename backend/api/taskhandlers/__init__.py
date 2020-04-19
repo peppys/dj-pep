@@ -3,8 +3,6 @@ from asyncio import sleep
 from datetime import datetime
 from json import loads
 
-import requests
-
 from sanic import Blueprint
 from sanic.request import Request
 from sanic.response import json
@@ -26,9 +24,6 @@ async def song_player_handler(request: Request):
     playing_songs = find_songs_by_status(SongStatus.PLAYING)
     for playing_song in playing_songs:
         update_by_id(playing_song['id'], {'status': SongStatus.PLAYED.value})
-
-    response = requests.get(payload['song_url'])
-    response.raise_for_status()
 
     update_by_id(payload['song_id'], {'status': SongStatus.PLAYING.value,
                                       'started_playing_at': datetime.utcnow().isoformat()})
