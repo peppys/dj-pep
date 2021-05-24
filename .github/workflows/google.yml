@@ -62,7 +62,7 @@ jobs:
       # Push the Docker image to Google Container Registry
       - name: Publish
         run: |
-          docker push $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE
+          docker push --all-tags $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE
 
       # Deploy the Docker image to the Cloud Run service
       - name: Deploy API
