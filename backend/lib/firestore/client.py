@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-from google.cloud.firestore_v1 import DocumentReference
+from google.cloud.firestore_v1 import DocumentReference, DocumentSnapshot
 
 cred = credentials.ApplicationDefault()
 firebase_admin.initialize_app(cred, {
@@ -62,6 +62,14 @@ def find_songs_by_status(status: SongStatus) -> List[Dict]:
     docs = db.collection('songs').where('status', '==', status.value).stream()
 
     return [{**{'id': doc.id}, **doc.to_dict()} for doc in docs]
+
+
+def find_song_by_id(song_id: str) -> Optional[Dict]:
+    doc: DocumentSnapshot = db.collection('songs').document(song_id).get()
+    if not doc.exists:
+        return None
+
+    return {**{'id': doc.id}, **doc.to_dict()}
 
 
 def update_by_id(song_id: str, updates: Dict):

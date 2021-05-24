@@ -62,10 +62,10 @@ async def twilio_handler(request: Request):
 
         song_doc = add_song(song)
 
-        create_task_to_play_song(song_id=song_doc.id, song_url=song['preview_url'])
+        create_task_to_play_song(song_id=song_doc.id)
     except Exception as e:
-        logging.error(
-            f'Could not search spotify for track: {str(e)} {traceback.format_exc()}')
+        logging.exception(
+            f'Could not search for track: {str(e)} {traceback.format_exc()}')
 
         return text('Sorry I had trouble with that. Please try a different song!', 200)
 

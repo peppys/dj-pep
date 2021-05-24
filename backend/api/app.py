@@ -5,6 +5,7 @@ from api.taskhandlers import task_handlers_router
 from api.webhooks import webhooks_router
 
 app = Sanic(name='dj-pep-api')
+app.config.RESPONSE_TIMEOUT = 300
 
 
 @app.get('/')

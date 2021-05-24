@@ -6,8 +6,8 @@ from google.cloud import tasks_v2
 client = tasks_v2.CloudTasksClient()
 
 
-def create_task_to_play_song(song_id: str, song_url: str):
-    payload = {'song_id': song_id, 'song_url': song_url}
+def create_task_to_play_song(song_id: str):
+    payload = {'song_id': song_id}
 
     parent = client.queue_path(project=os.getenv('GOOGLE_PROJECT_ID'),
                                location='us-central1',
