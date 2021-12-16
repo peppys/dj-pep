@@ -69,6 +69,11 @@ jobs:
         run: |
           gcloud run deploy $CLOUD_RUN_SERVICE --image $REGISTRY_HOSTNAME/$GOOGLE_PROJECT/$IMAGE:${GITHUB_SHA} --platform managed --project $GOOGLE_PROJECT --region us-central1
 
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      
       # Build and deploy the static website to Netlify
       - name: Deploy Web
         run: |
