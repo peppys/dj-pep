@@ -1,0 +1,8 @@
+type Query {
+    livez: Boolean!
+    readyz: Boolean!
+}
+
+type Mutation {
+    placeholder: Boolean!
+}
