@@ -37,7 +37,7 @@ async def find_song(query: str) -> Dict:
         'artists': [{'name': song['attributes']['artistName']}],
         'album_name': song['attributes']['albumName'],
         'preview_url': preview_url,
-        'preview_length': int(audio.info.length),
+        'preview_length': min(30, int(audio.info.length)), # cap at 30 seconds
         'image_url': song['attributes']['artwork']['url'].replace('{w}', '750').replace('{h}',
                                                                                         '750'),
         'source': 'itunes',
