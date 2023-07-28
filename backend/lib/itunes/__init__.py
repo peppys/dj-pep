@@ -10,7 +10,7 @@ async def find_song(query: str) -> Dict:
     session = ClientSession()
     response = await session.get(
         url='https://amp-api.music.apple.com/v1/catalog/us/search',
-        headers={'Authorization': f'Bearer {os.getenv("ITUNES_API_TOKEN")}'},
+        headers={'Authorization': f'Bearer {os.getenv("ITUNES_API_TOKEN")}', 'Origin': 'https://music.apple.com'},
         params={
             'term': query,
             'types': 'artists,songs',
@@ -37,7 +37,7 @@ async def find_song(query: str) -> Dict:
         'artists': [{'name': song['attributes']['artistName']}],
         'album_name': song['attributes']['albumName'],
         'preview_url': preview_url,
-        'preview_length': int(audio.info.length),
+        'preview_length': min(30, int(audio.info.length)), # cap at 30 seconds
         'image_url': song['attributes']['artwork']['url'].replace('{w}', '750').replace('{h}',
                                                                                         '750'),
         'source': 'itunes',
